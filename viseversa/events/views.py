@@ -151,8 +151,24 @@ def home(request):
 @authenticated
 def all_events(request):
     event_list = Event.objects.all().order_by('event_date', 'name')
+    # Set up Pagination
+    p = Paginator(event_list, 3)
+    page = request.GET.get('page')
+    events = p.get_page(page)
+    num_pages = events.paginator.num_pages
+    if num_pages > 4:
+        model = {1: [1, 2, 3],
+                 2: [1, 2, 3],
+                 num_pages - 1: [num_pages - 2, num_pages - 1, num_pages],
+                 num_pages: [num_pages - 2, num_pages - 1, num_pages]}. \
+            get(events.number,
+                [0, events.number - 1, events.number, events.number + 1, 0])
+    else:
+        model = False
     return render(request, 'events/event_list.html', {
-        'event_list': event_list
+        'event_list': event_list,
+        'events': events,
+        'model': model
     })
 
 @authenticated
@@ -186,7 +202,7 @@ def list_venues(request):
     venue_list = Venue.objects.all().order_by('name')
 
     # Set up Pagination
-    p = Paginator(venue_list, 10)
+    p = Paginator(venue_list, 1)
     page = request.GET.get('page')
     venues = p.get_page(page)
     num_pages = venues.paginator.num_pages

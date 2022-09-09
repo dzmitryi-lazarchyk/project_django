@@ -1,13 +1,29 @@
 {% extends 'events/base.html' %}
 {% block content %}
-    <center>
 
-    <h1>Hello {{name}}! Events for {{month}} {{year}}</h1>
+    <h1>Upcoming events:</h1>
     <br></br>
-    Current time:{{time}}
-    {{cal|safe}}
-    <br></br><br></br><br></br>
-    {{current_year}}
-    </center>
+    {% for event in event_list %}
+        <div class="card" >
+  <div class="card-header">
+    <strong>{{event.caps}}</strong>
+  </div>
+  <ul>
+    <li class="list-group-item">Date: {{event.event_date}}</li>
+        <li class="list-group-item">Venue: {{event.venue}}</li>
+        <li class="list-group-item">Venue WEB: {{event.venue.web}}</li>
+        <li class="list-group-item">Manager: {{event.manager}}</li>
+        <li class="list-group-item">Description: {{event.description}}</li>
+        <li class="list-group-item">Attendees:
+            <ul>
+            {% for user in event.attendees.all %}
+                <li>{{ user }}</li>
+            {% endfor %}
+            </ul>
+  </ul>
+</div>
+<br>
+
+{% endfor %}
 
 {% endblock %}

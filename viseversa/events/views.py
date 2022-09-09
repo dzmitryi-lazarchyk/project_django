@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Event, Venue
-from .forms import VenueForm, EventForm
+from .forms import VenueForm, EventForm, EventFormAdmin
 from django.http import HttpResponse
 import csv
 
@@ -115,32 +115,39 @@ def venue_pdf(request):
     return FileResponse(buf, as_attachment=True, filename='Venue.pdf')
 
 @authenticated
-def home(request, year: int = datetime.now().year, month: str = datetime.now().strftime('%B')):
-    name = "Dima"
-    # Convert month from name to number
-    month = month.capitalize()
-    month_number = int(list(calendar.month_name).index(month))
-
-    # Create a calendar
-    cal = HTMLCalendar().formatmonth(year, month_number)
-
-    # Get current year
-    now = datetime.now()
-    current_year = now.year
-
-    # Get current time
-    time = now.strftime("%H:%M")
-
-    return render(request, 'events/home.html', {
-        "name": name,
-        "year": year,
-        "month": month,
-        "month_number": month_number,
-        "cal": cal,
-        "current_year": current_year,
-        "time": time,
-    })
-
+def home(request):
+    name = request.user
+    # # Convert month from name to number
+    # month = month.capitalize()
+    # month_number = int(list(calendar.month_name).index(month))
+    #
+    # # Create a calendar
+    # cal = HTMLCalendar().formatmonth(year, month_number)
+    #
+    # # Get current year
+    # now = datetime.now()
+    # current_year = now.year
+    #
+    # # Get current time
+    # time = now.strftime("%H:%M")
+    #
+    # return render(request, 'events/home.html', {
+    #     "name": name,
+    #     "year": year,
+    #     "month": month,
+    #     "month_number": month_number,
+    #     "cal": cal,
+    #     "current_year": current_year,
+    #     "time": time,
+    # })
+    event_list = Event.objects.all().order_by('event_date', 'name')
+    context= {'name':name}
+    if event_list:
+        try:
+            context['event_list'] = event_list[:3]
+        except IndexError:
+            context['event_list'] = event_list
+    return render(request, 'events/home.html', context)
 @authenticated
 def all_events(request):
     event_list = Event.objects.all().order_by('event_date', 'name')
@@ -154,7 +161,10 @@ def add_venue(request):
     if request.method == "POST":
         form = VenueForm(request.POST)
         if form.is_valid():
-            form.save()
+            # form.save()
+            venue  = form.save(commit=False)
+            venue.owner =request.user.id
+            venue.save()
             return HttpResponseRedirect('/add_venue?submitted=True')
     else:
         form = VenueForm
@@ -254,13 +264,28 @@ def delete_event(request, event_id):
 def add_event(request):
     submitted = False
     if request.method == "POST":
-        form = EventForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/add_event?submitted=True')
+        if request.user.is_superuser:
+            form = EventFormAdmin(request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/add_event?submitted=True')
+        else:
+            form = EventForm(request.POST)
+            if form.is_valid():
+                event = form.save(commit=False)
+                event.manager = request.user
+                event.save()
+                # form.save()
+                return HttpResponseRedirect('/add_event?submitted=True')
     else:
-        form = EventForm
+        if request.user.is_superuser:
+            form = EventFormAdmin
+        else:
+            form = EventForm
         if 'submitted' in request.GET:
             submitted = True
-    form = EventForm
+    if request.user.is_superuser:
+        form = EventFormAdmin
+    else:
+        form = EventForm
     return render(request, 'events/add_event.html', {'form': form, 'submitted': submitted})

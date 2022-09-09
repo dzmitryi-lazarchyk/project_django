@@ -25,8 +25,8 @@ class VenueForm(ModelForm):
             'email_address':forms.EmailInput(attrs={'class':'form-control', 'placeholder':"Email address"}),
         }
 
-
-class EventForm(ModelForm):
+# admin form
+class EventFormAdmin(ModelForm):
     class Meta:
         model=Event
         fields=('name', 'event_date', 'venue', 'manager', 'attendees', 'description',)
@@ -43,6 +43,27 @@ class EventForm(ModelForm):
             'event_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s date"}),
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': "Venue"}),
             'manager': forms.Select(attrs={'class': 'form-select', 'placeholder': "Manager"}),
+            'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': "Attendees"}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Description"}),
+        }
+
+
+
+class EventForm(ModelForm):
+    class Meta:
+        model=Event
+        fields=('name', 'event_date', 'venue', 'attendees', 'description',)
+        labels = {
+            'name': '',
+            'event_date': '',
+            'venue': 'Venue:',
+            'attendees': 'Attendees:',
+            'description': '',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s name"}),
+            'event_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s date"}),
+            'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': "Venue"}),
             'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': "Attendees"}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Description"}),
         }

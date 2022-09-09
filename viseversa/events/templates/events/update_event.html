@@ -1,0 +1,22 @@
+{% extends 'events/base.html' %}
+{% block content %}
+    {% if not_manager %}
+     <h2>You can't update this Event.</h2>
+        <p>Only the Event's manager can update event.</p>
+        <br></br>
+        Logged User:{{ user }}
+        <br/>
+        Event Manager:{{ event.manager }}
+    {% else %}
+    <h1>Update Event:</h1>
+    <br/>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br/>
+        <input type="submit" value="Update"
+        class="btn btn-secondary">
+    {% endif %}
+
+
+{% endblock %}

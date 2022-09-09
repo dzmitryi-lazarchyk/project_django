@@ -1,0 +1,86 @@
+{% extends 'events/base.html' %}
+{% block content %}
+    <center>
+        <br/>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th scope="col">Venues:</th>
+                  <th scope="col" align="right">Get file:
+                      <a href="{% url 'venue-text'  %}"
+                            class="btn btn-outline-secondary btn-sm" >.txt</a>
+                      <a href="{% url 'venue-csv'  %}"
+                            class="btn btn-outline-secondary btn-sm" >.csv</a>
+                      <a href="{% url 'venue-pdf'%}"
+                         class="btn btn-outline-secondary btn-sm">.pdf</a>
+                  </th>
+                </tr>
+            </thead>
+<!--        {% for venue in venue_list %}-->
+<!--            {% endfor %}-->
+        {% for venue in venues %}
+
+                <tr>
+                    <th scope="row">
+                      <a href="{% url 'show-venue' venue.id %}">
+                        {{ venue }}: {{ venue.address }}</a>
+                    </th>
+                    <td  align="right">
+                            <a href="{% url 'update-venue' venue.id %}"
+                            class="btn btn-outline-secondary btn-sm">Update</a>
+                            <a href="{% url 'delete-venue' venue.id %}"
+                            class="btn btn-outline-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+        {% endfor %}
+        </table>
+
+    </center>
+<!--    {{venues}}</br>-->
+<!--    Has prev: {{venues.has_previous}}</br>-->
+<!--    Has next: {{venues.has_next}}</br>-->
+<!--    Current page: {{venues.number}}</br>-->
+<!--    Numbers of pages: {{ venues.paginator.num_pages }}</br>-->
+    {% if venues.paginator.num_pages > 1 %}
+    <hr></br>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination  justify-content-center">
+
+
+
+          {% if not model %}
+              {% for i in venues.paginator.page_range %}
+                {% if i is venues.number %}
+                    <li class="page-item disabled"><a class="page-link" href="?page={{i}}"><b>{{i}}</b></a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                {% endif  %}
+              {% endfor %}
+          {% else %}
+            {% if venues.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{venues.previous_page_number}}">Previous</a></li>
+            {% elif not venues.has_previous %}
+                <li class="page-item disabled"><a class="page-link">Previous</a></li>
+            {% endif %}
+            {% for i in model %}
+                {% if i is 0 %}
+                    <li class="page-item disabled"><a class="page-link" >...</a></li>
+                {% elif i is venues.number %}
+                    <li class="page-item disabled"><a class="page-link" ><b>{{i}}</b></a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if venues.has_next%}
+                <li class="page-item"><a class="page-link" href="?page={{venues.next_page_number}}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{venues.paginator.num_pages}}">Last &raquo</a></li>
+            {% elif not venues.has_next %}
+                <li class="page-item disabled"><a class="page-link">Next</a></li>
+            {% endif %}
+          {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+{% endblock %}

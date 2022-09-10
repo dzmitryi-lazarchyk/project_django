@@ -8,6 +8,9 @@ from .models import Event, Venue
 from .forms import VenueForm, EventForm, EventFormAdmin
 from django.http import HttpResponse
 import csv
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core import exceptions
 
 # Import PDF Stuff
 from django.http import FileResponse
@@ -230,8 +233,13 @@ def list_venues(request):
 @authenticated
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
+    try:
+        venue_owner=User.objects.get(pk=venue.owner)
+    except exceptions.ObjectDoesNotExist:
+        venue_owner='No owner'
     return render(request, 'events/show_venue.html', {
         'venue': venue,
+        'venue_owner': venue_owner,
     })
 
 @authenticated
@@ -278,8 +286,13 @@ def update_event(request, event_id):
 @authenticated
 def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
-    event.delete()
-    return redirect('event_list')
+    if event.manager==request.user:
+        event.delete()
+        messages.success(request, ("Event deleted successfully!"))
+        return redirect('event_list')
+    else:
+        messages.success(request, ("You aren't authorized to delete this event."))
+        return redirect('event_list')
 
 @authenticated
 def add_event(request):

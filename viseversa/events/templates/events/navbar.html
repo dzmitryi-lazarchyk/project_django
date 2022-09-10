@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" xmlns="http://www.w3.org/1999/html">
-  <div class="container-fluid">
+  <div class="container-fluid ">
     <a class="navbar-brand" href="{% url 'home' %}">Home</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -24,11 +24,16 @@
             <li><a class="dropdown-item" aria-current="page" href="{% url 'add-venue' %}">Add venue</a></li>
           </ul>
         </li>
-
         {% if  user.is_authenticated %}
+        <div class="d-flex justify-content-center">
+        <li class="nav-item ">
+          <a class="nav-link disabled">{{ user }}</a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
         </li>
+        </div>
         {% else %}
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Register</a>
@@ -39,7 +44,7 @@
         {% endif %}
         </ul>
 
-      <form class="d-flex" role="search" method="POST"
+      <form class="d-flex " role="search" method="POST"
             action="{% url 'search-venues' %}">
         {% csrf_token %}
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class Venue(models.Model):
@@ -23,15 +24,15 @@ class MyclubUser(models.Model):
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
-
+user_model = get_user_model()
 class Event(models.Model):
     name = models.CharField('Event Name', max_length=120)
     event_date = models.DateTimeField('Event Date')
     venue = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.CASCADE)
     # venue = models.CharField(max_length=120)
-    manager = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    manager = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name='manager')
     description = models.TextField(blank=True)
-    attendees=models.ManyToManyField(MyclubUser, blank=True)
+    attendees=models.ManyToManyField(user_model, blank=True)
 
     def __str__(self):
         return self.name

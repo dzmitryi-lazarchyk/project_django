@@ -3,7 +3,7 @@ import calendar
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from calendar import HTMLCalendar
-from datetime import datetime
+from django.utils import timezone
 from .models import Event, Venue
 from .forms import VenueForm, EventForm, EventFormAdmin
 from django.http import HttpResponse
@@ -140,7 +140,12 @@ def home(request):
     #     "current_year": current_year,
     #     "time": time,
     # })
-    event_list = Event.objects.all().order_by('event_date', 'name')
+    events = Event.objects.all().order_by('event_date', 'name')
+    event_list=[]
+    for event in events:
+        if event.event_date>timezone.now():
+            event_list.append(event)
+
     context= {'name':name}
     if event_list:
         try:

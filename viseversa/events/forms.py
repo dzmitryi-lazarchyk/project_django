@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Venue, Event
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 # Create a venue form
 class VenueForm(ModelForm):

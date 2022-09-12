@@ -11,8 +11,10 @@
             Events
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" aria-current="page" href="{% url 'event_list' %}">Show Events</a></li>
+            <li><a class="dropdown-item" aria-current="page" href="{% url 'my-events' %}">My Events</a></li>
+            <li><a class="dropdown-item" aria-current="page" href="{% url 'event_list' %}">All Events</a></li>
             <li><a class="dropdown-item" aria-current="page" href="{% url 'add-event' %}">Add event</a></li>
+            <li><a class="dropdown-item" aria-current="page" href="{% url 'search-events' %}">Search events</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -50,7 +52,7 @@
         {% csrf_token %}
 
 
-        <input class="form-control me-2" type="search" placeholder="Search Venues" aria-label="Search" name="searched">
+        <input class="form-control me-2" type="search" placeholder="Search Venues, Events" aria-label="Search" name="searched">
         <button class="btn btn-outline-secondary" type="submit">Search</button>
       </form>
       </ul>

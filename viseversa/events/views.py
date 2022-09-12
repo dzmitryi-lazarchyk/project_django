@@ -247,9 +247,12 @@ def search_venues(request):
     if request.method == "POST":
         searched = request.POST.get("searched", False)
         venues = Venue.objects.filter(name__contains=searched)
+        events = Event.objects.filter(name__contains=searched)
         return render(request, 'events/search_venues.html',
                       {'searched': searched,
-                       'venues': venues})
+                       'venues': venues,
+                       'events': events,
+                       })
     else:
         return render(request, 'events/search_venues.html', {})
 
@@ -323,3 +326,24 @@ def add_event(request):
     else:
         form = EventForm
     return render(request, 'events/add_event.html', {'form': form, 'submitted': submitted})
+
+@authenticated
+def my_events(request):
+
+    events_manager=Event.objects.filter(manager=request.user.id)
+    events_attendees=Event.objects.filter(attendees=request.user.id)
+    return render(request,
+                  'events/my_events.html', {
+                  'events_manager':events_manager,
+                  'events_attendees':events_attendees,
+                  })
+
+def search_events(request):
+    if request.method == "POST":
+        searched = request.POST.get("searched", False)
+        events = Event.objects.filter(name__contains=searched)
+        return render(request, 'events/search_events.html',
+                      {'searched': searched,
+                       'events': events})
+    else:
+        return render(request, 'events/search_events.html', {})

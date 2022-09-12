@@ -33,6 +33,7 @@ class Event(models.Model):
     manager = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name='manager')
     description = models.TextField(blank=True)
     attendees=models.ManyToManyField(user_model, blank=True)
+    # attendees=models.ManyToManyField(user_model, blank=True,  limit_choices_to={'username': 'admin'})
 
     def __str__(self):
         return self.name

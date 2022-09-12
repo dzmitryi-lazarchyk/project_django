@@ -1,0 +1,42 @@
+{% extends 'events/base.html' %}
+{% block content %}
+    <div class="card w-50" >
+    <div class="card-header">
+      {% if searched %}
+    <h1>You searched for...{{ searched }}</h1>
+        {%  else %}
+    <h1>Search Events:</h1>
+        {% endif %}
+  </div>
+    <div class="card-body" style="width: 18rem;">
+  <ul>
+    <form  role="search" method="POST"
+            action="{% url 'search-events' %}">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="Search Events" aria-label="Search" name="searched">
+        <br/>
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+      </form>
+  </ul>
+    </div></div>
+<hr><br/>
+
+
+        {% for event in events %}
+            <div class="card" >
+  <div class="card-header">
+      <strong>{{ event.name }}</strong>
+  </div>
+  <ul>
+    <li class="list-group-item">{{ event.event_date }}</li
+        <li class="list-group-item">{{ event.venue }}</li>
+        <li class="list-group-item">{{ event.manager }}</li>
+        <li class="list-group-item" >{{ event.attendees }}<br/></li>
+  </ul>
+</div>
+            <br/>
+        {% endfor %}
+
+
+
+{% endblock %}

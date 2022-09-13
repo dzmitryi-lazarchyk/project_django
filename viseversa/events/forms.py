@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Venue, Event
+from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
@@ -9,7 +10,9 @@ class VenueForm(ModelForm):
     class Meta:
         model = Venue
         # fields = "__all__" Include all fields in the form
-        fields = ('name', 'address', 'zip_code', 'phone', 'web', 'email_address')
+        fields = ('name', 'address', 'zip_code',
+                  'phone', 'web', 'email_address',
+                  'venue_image')
         labels = {
             'name': '',
             'address': '',
@@ -17,6 +20,7 @@ class VenueForm(ModelForm):
             'phone': '',
             'web': '',
             'email_address': '',
+            'venue_image': '',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class':'form-control', 'placeholder':"Venue\'s name"}),
@@ -46,7 +50,7 @@ class EventFormAdmin(ModelForm):
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': "Venue"}),
             'manager': forms.Select(attrs={'class': 'form-select', 'placeholder': "Manager"}),
             'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': "Attendees"}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Description"}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Description", }),
         }
 
 

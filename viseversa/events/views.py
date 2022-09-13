@@ -11,6 +11,7 @@ import csv
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core import exceptions
+from django.contrib.auth import get_user_model
 
 # Import PDF Stuff
 from django.http import FileResponse
@@ -183,7 +184,7 @@ def all_events(request):
 def add_venue(request):
     submitted = False
     if request.method == "POST":
-        form = VenueForm(request.POST)
+        form = VenueForm(request.POST, request.FILES)
         if form.is_valid():
             # form.save()
             venue  = form.save(commit=False)
@@ -322,6 +323,7 @@ def add_event(request):
         if 'submitted' in request.GET:
             submitted = True
     if request.user.is_superuser:
+        # form = EventFormAdmin(instance=Event(attendees=attendees))
         form = EventFormAdmin
     else:
         form = EventForm

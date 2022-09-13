@@ -18,6 +18,9 @@
         <li class="list-group-item">{{event.description}}</li>
       <li class="list-group-item">{{ venue.email_address }}</li>
       <li class="list-group-item">Owner: {{ venue_owner }}</li>
+      {% if venue.venue_image %}
+      <li class="list-group-item"><img src="{{ venue.venue_image.url }}" width="500"></li>
+      {% endif %}
   </ul>
 </div>
 {% endblock %}

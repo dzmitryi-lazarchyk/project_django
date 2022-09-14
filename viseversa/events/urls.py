@@ -19,4 +19,5 @@ urlpatterns = [
     path('venue_pdf', views.venue_pdf, name="venue-pdf"),
     path('my_events', views.my_events, name="my-events"),
     path('search_events', views.search_events, name="search-events"),
+    path('venue_events/<venue_id>', views.venue_events, name="venue-events"),
 ]

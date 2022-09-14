@@ -187,8 +187,8 @@ def add_venue(request):
         form = VenueForm(request.POST, request.FILES)
         if form.is_valid():
             # form.save()
-            venue  = form.save(commit=False)
-            venue.owner =request.user.id
+            venue = form.save(commit=False)
+            venue.owner = request.user.id
             venue.save()
             return HttpResponseRedirect('/add_venue?submitted=True')
     else:
@@ -323,7 +323,7 @@ def add_event(request):
         if 'submitted' in request.GET:
             submitted = True
     if request.user.is_superuser:
-        # form = EventFormAdmin(instance=Event(attendees=attendees))
+        # form = EventFormAdmin(instance=Event(attendees=get_user_model().objects.filter(username=User.username)))
         form = EventFormAdmin
     else:
         form = EventForm
@@ -349,3 +349,11 @@ def search_events(request):
                        'events': events})
     else:
         return render(request, 'events/search_events.html', {})
+
+def venue_events(request, venue_id):
+    events = Event.objects.filter(venue=venue_id)
+    venue=Venue.objects.get(pk=venue_id)
+    return render(request, 'events/venue_events.html', {
+        'events': events,
+        'venue': venue,
+    })

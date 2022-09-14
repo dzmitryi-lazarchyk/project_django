@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from datetime import date
+from django.db.models import Q
 
 
 class Venue(models.Model):
@@ -34,10 +36,17 @@ class Event(models.Model):
     manager = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name='manager')
     description = models.TextField(blank=True)
     attendees=models.ManyToManyField(user_model, blank=False)
-    # attendees=models.ManyToManyField(user_model, blank=True,  limit_choices_to={'username': 'admin'})
+    # attendees=models.ManyToManyField(user_model, blank=True,
+    #                                  limit_choices_to=user_model.objects.get(Q(username__startswith='admin'),))
 
     def __str__(self):
         return self.name
 
     def caps(self):
         return str(self.name).capitalize()
+
+    @property
+    def days_till(self):
+        today= date.today()
+        days_till=self.event_date.date()-today
+        return days_till

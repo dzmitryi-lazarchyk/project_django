@@ -27,10 +27,12 @@
                         {{ venue }}: {{ venue.address }}</a>
                     </th>
                     <td  align="right">
+                            <a href="{% url 'venue-events' venue.id %}"
+                                class="btn btn-outline-info btn-sm">List Events</a>
                             <a href="{% url 'update-venue' venue.id %}"
-                            class="btn btn-outline-secondary btn-sm">Update</a>
+                                class="btn btn-outline-secondary btn-sm">Update</a>
                             <a href="{% url 'delete-venue' venue.id %}"
-                            class="btn btn-outline-danger btn-sm">Delete</a>
+                                class="btn btn-outline-danger btn-sm">Delete</a>
                     </td>
                 </tr>
         {% endfor %}

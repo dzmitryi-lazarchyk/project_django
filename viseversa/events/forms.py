@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from .models import Venue, Event
 from django.db import models
 from django.contrib.auth.models import User
@@ -73,3 +73,13 @@ class EventForm(ModelForm):
             'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': "Attendees"}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Description"}),
         }
+
+# Trying to exlude user from attendees list
+
+# class MyEventForm(forms.Form):
+#     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s name"}), label='', max_length=120)
+#     event_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s date"}), label='', max_length=120)
+#     venue = forms.ChoiceField(widget=forms.RadioSelect, choices=[('1', 'one'), ('2', 'two')]),
+#     # manager = forms.Select(),
+#     # attendees = forms.SelectMultiple(),
+#     # description = forms.Textarea(),

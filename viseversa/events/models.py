@@ -37,7 +37,7 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     attendees=models.ManyToManyField(user_model, blank=False)
     # attendees=models.ManyToManyField(user_model, blank=True,
-    #                                  limit_choices_to=user_model.objects.get(Q(username__startswith='admin'),))
+    #                                  limit_choices_to=Q(username__startswith='admin'),)
 
     def __str__(self):
         return self.name

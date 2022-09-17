@@ -276,7 +276,7 @@ def update_event(request, event_id):
         not_manager = False
     else:
         not_manager = True
-    form = EventForm(request.POST or None, instance=event)
+    form = EventForm(request.user, data=request.POST or None, instance=event)
     if form.is_valid():
         form.save()
         return redirect('event_list')
@@ -302,31 +302,35 @@ def delete_event(request, event_id):
 def add_event(request):
     submitted = False
     if request.method == "POST":
+        print(request.POST)
         if request.user.is_superuser:
-            form = EventFormAdmin(request.POST)
+            form = EventFormAdmin(request.user, data=request.POST)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect('/add_event?submitted=True')
+            else:
+                print(form.errors)
         else:
-            form = EventForm(request.POST)
+            form = EventForm(request.user, data=request.POST)
             if form.is_valid():
+                print('yes')
                 event = form.save(commit=False)
                 event.manager = request.user
-                event.save()
+                print(event.manager)
+                form.save()
                 # form.save()
                 return HttpResponseRedirect('/add_event?submitted=True')
     else:
         if request.user.is_superuser:
-            form = EventFormAdmin
+            form = EventFormAdmin(request.user)
         else:
-            form = EventForm
+            form = EventForm(request.user)
         if 'submitted' in request.GET:
             submitted = True
     if request.user.is_superuser:
-        # form = EventFormAdmin(instance=Event(attendees=get_user_model().objects.filter(username=User.username)))
-        form = EventFormAdmin
+        form = EventFormAdmin(request.user)
     else:
-        form = EventForm
+        form = EventForm(request.user)
     return render(request, 'events/add_event.html', {'form': form, 'submitted': submitted})
 
 @authenticated

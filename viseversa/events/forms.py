@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 
 # Create a venue form
 class VenueForm(ModelForm):
+
     class Meta:
         model = Venue
         # fields = "__all__" Include all fields in the form
@@ -33,6 +34,13 @@ class VenueForm(ModelForm):
 
 # admin form
 class EventFormAdmin(ModelForm):
+
+    def __init__(self, user, *args, **kwargs):
+        super(EventFormAdmin, self).__init__(*args, **kwargs)
+        users = get_user_model().objects.exclude(username=user.username)
+        self.fields['attendees'].choices = ([(user.id, user) for user in users]
+
+        )
     class Meta:
         model=Event
         fields=('name', 'event_date', 'venue', 'manager', 'attendees', 'description',)
@@ -56,6 +64,13 @@ class EventFormAdmin(ModelForm):
 
 
 class EventForm(ModelForm):
+
+    def __init__(self, user, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+        users = get_user_model().objects.exclude(username=user.username)
+        self.fields['attendees'].choices = ([(user.id, user) for user in users]
+
+        )
     class Meta:
         model=Event
         fields=('name', 'event_date', 'venue', 'attendees', 'description',)

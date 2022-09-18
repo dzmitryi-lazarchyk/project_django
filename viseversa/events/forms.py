@@ -4,6 +4,7 @@ from .models import Venue, Event
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from tempus_dominus.widgets import DateTimePicker
 
 # Create a venue form
 class VenueForm(ModelForm):
@@ -54,7 +55,8 @@ class EventFormAdmin(ModelForm):
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s name"}),
-            'event_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s date"}),
+            'event_date': DateTimePicker(options={'useCurrent': True, 'collapse': False,},
+                                         attrs={'append': 'fa fa-calendar', 'icon_toggle': True,}),
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': "Venue"}),
             'manager': forms.Select(attrs={'class': 'form-select', 'placeholder': "Manager"}),
             'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': "Attendees"}),
@@ -83,7 +85,8 @@ class EventForm(ModelForm):
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s name"}),
-            'event_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s date"}),
+            'event_date': DateTimePicker(options={'useCurrent': True, 'collapse': False,},
+                                         attrs={'append': 'fa fa-calendar', 'icon_toggle': True,}),
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': "Venue"}),
             'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': "Attendees"}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Description"}),

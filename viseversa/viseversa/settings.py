@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'events.apps.EventsConfig',
     'members.apps.MembersConfig',
+    'tempus_dominus',
 ]
 
 MIDDLEWARE = [

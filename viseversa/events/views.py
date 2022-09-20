@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from calendar import HTMLCalendar
 from django.utils import timezone
-from .models import Event, Venue
+from .models import Event, Venue, MyUser
 from .forms import VenueForm, EventForm, EventFormAdmin
 from django.http import HttpResponse
 import csv
@@ -36,7 +36,9 @@ def authenticated(f):
 
     return wrapper
 
-
+def user_profile(request):
+    my_user = MyUser.objects.get(user=request.user)
+    return render(request, 'events/user_profile.html', {'my_user':my_user.get_info()})
 # Generate text file
 @authenticated
 def venue_text(request):

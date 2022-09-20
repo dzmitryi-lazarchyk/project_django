@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Venue, MyclubUser, Event
+from .models import Venue, Event, MyUser
 
 # admin.site.register(Venue)
-admin.site.register(MyclubUser)
+# admin.site.unregister(MyclubUser)
 # admin.site.register(Event)
 
 

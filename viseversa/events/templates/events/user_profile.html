@@ -1,0 +1,18 @@
+{% extends 'events/base.html' %}
+{% block content %}
+  <div class="card" >
+  <div class="card-header">
+    <strong>{{ venue }}</strong>
+  </div>
+  <ul>
+    <li class="list-group-item">{{my_user.username }}</li>
+      {% if my_user.ava %}
+      <li class="list-group-item"><img src="{{ my_user.ava.url }}" width="500"></li>
+      {% endif %}
+        <li class="list-group-item">{{ my_user.first_name }}</li>
+        <li class="list-group-item">{{ my_user.last_name }}</li>
+        <li class="list-group-item" >{{ my_user.email }}<br/></li>
+        <li class="list-group-item">{{my_user.description}}</li>
+  </ul>
+</div>
+{% endblock %}

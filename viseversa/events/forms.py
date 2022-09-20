@@ -1,12 +1,29 @@
 from django import forms
 from django.forms import ModelForm, Form
-from .models import Venue, Event
+from .models import Venue, Event, MyUser
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from tempus_dominus.widgets import DateTimePicker
 
 # Create a venue form
+class UserForm(forms.Form):
+    fields = ('username', 'first_name', 'last_name',
+              'email',
+              'ava', 'description')
+    ava = forms.ImageField()
+    username = forms.CharField(max_length=20, widget=forms.TextInput(
+        attrs={'class':'form-conrol', 'placeholder':'Useername'}))
+    first_name = forms.CharField(max_length=20, widget=forms.TextInput(
+        attrs={'class':'form-conrol', 'placeholder':'First name'}))
+    last_name = forms.CharField(max_length=20, widget=forms.TextInput(
+        attrs={'class':'form-conrol', 'placeholder':'Last name'}))
+    email = forms.CharField(max_length=60,widget=forms.EmailInput(
+        attrs={'class':'form-conrol', 'placeholder':'Email address'}))
+    description = forms.CharField(max_length=300,widget=forms.Textarea(
+        attrs={'class':'form-conrol', 'placeholder':'Email address'}))
+
+
 class VenueForm(ModelForm):
 
     class Meta:
@@ -92,12 +109,3 @@ class EventForm(ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Description"}),
         }
 
-# Trying to exlude user from attendees list
-
-# class MyEventForm(forms.Form):
-#     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s name"}), label='', max_length=120)
-#     event_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Event\'s date"}), label='', max_length=120)
-#     venue = forms.ChoiceField(widget=forms.RadioSelect, choices=[('1', 'one'), ('2', 'two')]),
-#     # manager = forms.Select(),
-#     # attendees = forms.SelectMultiple(),
-#     # description = forms.Textarea(),

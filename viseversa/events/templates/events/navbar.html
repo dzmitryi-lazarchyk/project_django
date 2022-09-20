@@ -30,7 +30,7 @@
       <ul class="navbar-nav ml-auto">
       {% if  user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link disabled">Logged in as: {{ user }}</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'user-profile' %}">{{ user }}</a>
           </li>
           <li class="nav-item px-4">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>

@@ -13,19 +13,27 @@ class Venue(models.Model):
     web = models.URLField('Website Address', blank=True)
     email_address = models.EmailField('Email Address', blank=True)
     owner = models.IntegerField("Venue Owner", blank=False, default=1)
-    venue_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    venue_image = models.ImageField(null=True, blank=True, upload_to="images_venues/")
 
     def __str__(self):
         return self.name
 
 
-class MyclubUser(models.Model):
-    first_name = models.CharField(max_length=300)
-    last_name = models.CharField(max_length=300, blank=True)
-    email = models.EmailField('User Email')
-
-    def __str__(self):
-        return self.first_name + ' ' + self.last_name
+class MyUser(models.Model):
+    user= models.OneToOneField(User, on_delete=models.CASCADE)
+    ava = models.ImageField(null=True, blank=True, upload_to="images_avas/")
+    description = models.TextField(blank=True, null=True)
+    def get_info(self):
+        info = {'username':self.user.username,
+                'first_name': self.user.first_name,
+                'last_name': self.user.last_name,
+                'email': self.user.email,
+                }
+        if self.ava:
+            info['ava']=self.ava
+        if self.description:
+            info['ava']=self.description
+        return info
 
 user_model = get_user_model()
 class Event(models.Model):

@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from calendar import HTMLCalendar
 from django.utils import timezone
 from .models import Event, Venue, MyUser
-from .forms import VenueForm, EventForm, EventFormAdmin
+from .forms import VenueForm, EventForm, EventFormAdmin, MyUserForm
 from django.http import HttpResponse
 import csv
 from django.contrib import messages
@@ -38,7 +38,38 @@ def authenticated(f):
 
 def user_profile(request):
     my_user = MyUser.objects.get(user=request.user)
+    print(my_user.description)
     return render(request, 'events/user_profile.html', {'my_user':my_user.get_info()})
+
+def update_user_profile(request):
+    submitted=False
+    if request.method == "POST":
+        my_user = MyUser.objects.get(user=request.user)
+        user=request.user
+        form=MyUserForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            user.first_name = request.POST.get('first_name')
+            user.last_name = request.POST.get('last_name')
+            user.email = request.POST.get('email')
+            user.save()
+
+            my_user.ava=request.FILES.get('ava')
+            my_user.description=request.POST.get('description')
+            my_user.save()
+            return redirect('home')
+    else:
+        user = request.user
+        my_user = MyUser.objects.get(user=user)
+        print(my_user.ava)
+        print(my_user.user)
+        form = MyUserForm(initial={"username":user, "first_name":user.first_name,
+                                   "last_name":user.last_name, "email":user.email,
+                                   "description":my_user.description,
+                                   "ava":my_user.ava})
+        if 'submitted' in request.GET:
+            submitted=True
+    return render(request, 'events/update_user_profile.html', {'form': form, 'submitted': submitted})
+
 # Generate text file
 @authenticated
 def venue_text(request):

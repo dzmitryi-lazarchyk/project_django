@@ -32,8 +32,10 @@ class MyUser(models.Model):
         if self.ava:
             info['ava']=self.ava
         if self.description:
-            info['ava']=self.description
+            info['description']=self.description
         return info
+    def __str__(self):
+        return self.description
 
 user_model = get_user_model()
 class Event(models.Model):

@@ -5,6 +5,7 @@ urlpatterns = [
     # path('', views.home, name="home"),
     path('', views.home, name="home"),
     path('user_profile', views.user_profile, name="user-profile"),
+    path('update_user_profile', views.update_user_profile, name="update-user-profile"),
     path('event_list', views.all_events, name="event_list"),
     path('add_venue', views.add_venue, name="add-venue"),
     path('venues_list', views.list_venues, name="list-venues"),

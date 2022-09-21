@@ -7,13 +7,13 @@ from django.contrib.auth import get_user_model
 from tempus_dominus.widgets import DateTimePicker
 
 # Create a venue form
-class UserForm(forms.Form):
+class MyUserForm(forms.Form):
     fields = ('username', 'first_name', 'last_name',
               'email',
               'ava', 'description')
-    ava = forms.ImageField()
     username = forms.CharField(max_length=20, widget=forms.TextInput(
         attrs={'class':'form-conrol', 'placeholder':'Useername'}))
+    ava = forms.ImageField()
     first_name = forms.CharField(max_length=20, widget=forms.TextInput(
         attrs={'class':'form-conrol', 'placeholder':'First name'}))
     last_name = forms.CharField(max_length=20, widget=forms.TextInput(
@@ -21,7 +21,9 @@ class UserForm(forms.Form):
     email = forms.CharField(max_length=60,widget=forms.EmailInput(
         attrs={'class':'form-conrol', 'placeholder':'Email address'}))
     description = forms.CharField(max_length=300,widget=forms.Textarea(
-        attrs={'class':'form-conrol', 'placeholder':'Email address'}))
+        attrs={'class':'form-conrol', 'placeholder':'Description'}))
+
+
 
 
 class VenueForm(ModelForm):

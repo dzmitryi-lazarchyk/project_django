@@ -30,7 +30,11 @@
       <ul class="navbar-nav ml-auto">
       {% if  user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'user-profile' %}">{{ user }}</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'user-profile' user_id=user.id %}">
+              {%if  user.myuser.ava %}
+              <img class="rounded-circle" src="{{ user.myuser.ava.url }}" width="30" height="30">
+              {% endif %}
+              {{ user }}</a>
           </li>
           <li class="nav-item px-4">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>

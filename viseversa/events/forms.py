@@ -13,14 +13,14 @@ class MyUserForm(forms.Form):
               'ava', 'description')
     username = forms.CharField(max_length=20, widget=forms.TextInput(
         attrs={'class':'form-conrol', 'placeholder':'Useername'}))
-    ava = forms.ImageField()
+    ava = forms.ImageField(required=False)
     first_name = forms.CharField(max_length=20, widget=forms.TextInput(
         attrs={'class':'form-conrol', 'placeholder':'First name'}))
     last_name = forms.CharField(max_length=20, widget=forms.TextInput(
         attrs={'class':'form-conrol', 'placeholder':'Last name'}))
     email = forms.CharField(max_length=60,widget=forms.EmailInput(
         attrs={'class':'form-conrol', 'placeholder':'Email address'}))
-    description = forms.CharField(max_length=300,widget=forms.Textarea(
+    description = forms.CharField(max_length=300,required=False,widget=forms.Textarea(
         attrs={'class':'form-conrol', 'placeholder':'Description'}))
 
 

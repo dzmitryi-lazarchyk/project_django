@@ -36,10 +36,11 @@ def authenticated(f):
 
     return wrapper
 
-def user_profile(request):
-    my_user = MyUser.objects.get(user=request.user)
-    print(my_user.description)
-    return render(request, 'events/user_profile.html', {'my_user':my_user.get_info()})
+def user_profile(request, user_id):
+    user = User.objects.get(pk=user_id)
+    my_user = MyUser.objects.get(user=user)
+    return render(request, 'events/user_profile.html', {'info':my_user.get_info(),
+                                                        'my_user':my_user,})
 
 def update_user_profile(request):
     submitted=False
@@ -60,8 +61,6 @@ def update_user_profile(request):
     else:
         user = request.user
         my_user = MyUser.objects.get(user=user)
-        print(my_user.ava)
-        print(my_user.user)
         form = MyUserForm(initial={"username":user, "first_name":user.first_name,
                                    "last_name":user.last_name, "email":user.email,
                                    "description":my_user.description,

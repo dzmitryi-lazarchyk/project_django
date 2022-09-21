@@ -4,23 +4,40 @@
     <h1>Upcoming events:</h1>
     <br></br>
     {% for event in event_list %}
-        <div class="card" >
+       <div class="card" >
   <div class="card-header">
     <strong>{{event.caps}}</strong>
   </div>
   <ul>
     <li class="list-group-item">Date: {{event.event_date}}</li>
+    <li class="list-group-item">Days till Event: {{event.days_till}}</li>
         <li class="list-group-item">Venue: {{event.venue}}</li>
         <li class="list-group-item">Venue WEB: {{event.venue.web}}</li>
         <li class="list-group-item">Manager: {{event.manager}}</li>
         <li class="list-group-item">Description: {{event.description}}</li>
         <li class="list-group-item">Attendees:
             <ul>
-            {% for user in event.attendees.all %}
-                <li>{{ user }}</li>
+            {% for attendee in event.attendees.all %}
+                <li>
+                    <a class="nav-link active" aria-current="page" href="{% url 'user-profile' user_id=attendee.id %}">
+                {%if  attendee.myuser.ava %}
+              <img class="rounded-circle" src="{{ attendee.myuser.ava.url }}" width="30" height="30">
+                        {% endif %}
+              {{ attendee }}</a>
+                </li>
             {% endfor %}
             </ul>
   </ul>
+            {% if user == event.manager %}
+            <div class="card-footer">
+
+                <a href="{% url 'update-event' event.id %}"
+                            class="btn btn-outline-secondary btn-sm">Update Event</a>
+                <a href="{% url 'delete-event' event.id %}"
+                            class="btn btn-outline-danger btn-sm">Delete Event</a>
+
+            </div>
+            {% endif %}
 </div>
 <br>
 

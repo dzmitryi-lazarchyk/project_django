@@ -18,8 +18,14 @@
         <li class="list-group-item">Description: {{event.description}}</li>
         <li class="list-group-item">Attendees:
             <ul>
-            {% for user in event.attendees.all %}
-                <li>{{ user }}</li>
+            {% for attendee in event.attendees.all %}
+                <li>
+                    <a class="nav-link active" aria-current="page" href="{% url 'user-profile' user_id=attendee.id %}">
+                {%if  attendee.myuser.ava %}
+              <img class="rounded-circle" src="{{ attendee.myuser.ava.url }}" width="30" height="30">
+                        {% endif %}
+              {{ attendee }}</a>
+                </li>
             {% endfor %}
             </ul>
   </ul>
